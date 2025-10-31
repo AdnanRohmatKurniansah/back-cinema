@@ -1,5 +1,5 @@
-import { prisma } from '../utils/Prisma'
-import createServer from '../utils/Server'
+import { prisma } from '../utils/prisma'
+import createServer from '../utils/server'
 import supertest from 'supertest'
 
 const app = createServer()

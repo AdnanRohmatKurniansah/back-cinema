@@ -6,14 +6,198 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
+model Pembeli {
+  id_pembeli Int @id @default(autoincrement())
+  nama String @db.VarChar(150) 
+  email String @db.VarChar(100) @unique
+  no_telp String? @db.VarChar(20) @unique
+  alamat String? @db.VarChar(100)
   password String 
-  isAdmin Boolean @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  pemesanan Pemesanan[]
+}
+
+model Cabang {
+  id_cabang Int @id @default(autoincrement())
+  nama_cabang String @db.VarChar(150) 
+  alamat String @db.VarChar(100)
+  no_telp String @db.VarChar(20) @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  admin Admin[]
+  studio Studio[]
+}
+
+model Studio {
+  id_studio Int @id @default(autoincrement())
+  nama_studio String @db.VarChar(150)
+  kapasitas Int
+
+  id_cabang Int 
+  cabang Cabang @relation(fields: [id_cabang], references: [id_cabang])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  kursi Kursi[]
+  jadwal Jadwal[]
+}
+
+enum Role {
+  SuperAdmin
+  Kasir
+  Staff
+}
+
+model Admin {
+  id_admin Int @id @default(autoincrement())
+  nama_admin String @db.VarChar(150)
+  username String @db.VarChar(70) @unique 
+  email String @db.VarChar(100) @unique
+  password String
+  role Role @default(Staff)
+
+  id_cabang Int?
+  cabang Cabang? @relation(fields: [id_cabang], references: [id_cabang])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  pemesanan Pemesanan[]
+}
+
+model Genre {
+  id_genre Int @id @default(autoincrement())
+  nama_genre String @db.VarChar(80) @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  FilmGenre FilmGenre[]
+}
+
+model Film {
+  id_film Int @id @default(autoincrement())
+  judul String @db.VarChar(150) 
+  durasi String @db.VarChar(20)
+  rating_usia String @db.VarChar(30)
+  trailer String?
+  sinopsis String
+  poster_url String
+  tanggal_rilis DateTime @db.Date 
+  
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  jadwal Jadwal[]
+
+  FilmGenre FilmGenre[]
+}
+
+
+model FilmGenre {
+  id_film Int
+  id_genre Int
+  film Film @relation(fields: [id_film], references: [id_film])
+  genre Genre @relation(fields: [id_genre], references: [id_genre])
+
+  @@id([id_film, id_genre])
+}
+
+enum StatusKursi {
+  Tersedia
+  Terisi
+}
+
+model Kursi {
+  id_kursi Int @id @default(autoincrement())
+  nomor_kursi String @db.VarChar(20) @unique
+  status_kursi StatusKursi @default(Tersedia)
+
+  id_studio Int 
+  studio Studio @relation(fields: [id_studio], references: [id_studio])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  detailpemesanan DetailPemesanan[]
+}
+
+model Jadwal {
+  id_jadwal Int @id @default(autoincrement())
+  tanggal_tayang DateTime @db.Date
+  waktu_mulai DateTime @db.Time()
+  waktu_selesai DateTime @db.Time()
+  harga_tiket Int
+
+  id_film Int
+  film Film @relation(fields: [id_film], references: [id_film])
+  id_studio Int 
+  studio Studio @relation(fields: [id_studio], references: [id_studio])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  detailpemesanan DetailPemesanan[]
+}
+
+enum StatusPemesanan {
+  BelumBayar
+  Lunas
+  Dibatalkan
+}
+
+enum TipePemesanan {
+  Online
+  Offline
+}
+
+model Pemesanan {
+  id_pemesanan Int @id @default(autoincrement())
+  waktu_pemesanan DateTime @default(now())
+  status_pemesanan StatusPemesanan @default(BelumBayar)
+  tipe_pemesanan TipePemesanan @default(Offline)
+  total Int?
+  
+  id_pembeli Int
+  id_admin Int?
+  pembeli Pembeli? @relation(fields: [id_pembeli], references: [id_pembeli])
+  admin Admin? @relation(fields: [id_admin], references: [id_admin])
+  
+  updated_at DateTime @updatedAt
+  detailpemesanan DetailPemesanan[]
+  pembayaran Pembayaran[]
+}
+
+model DetailPemesanan {
+  id_detailpemesanan Int @id @default(autoincrement())
+  harga_tiket Int 
+
+  id_pemesanan Int
+  id_jadwal Int
+  id_kursi Int
+  pemesanan Pemesanan @relation(fields: [id_pemesanan], references: [id_pemesanan])
+  jadwal Jadwal @relation(fields: [id_jadwal], references: [id_jadwal])
+  kursi Kursi @relation(fields: [id_kursi], references: [id_kursi])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum StatusPembayaran { 
+  Pending
+  Berhasil
+  Gagal
+}
+
+model Pembayaran {
+  id_pembayaran Int @id @default(autoincrement())
+  waktu_pembayaran DateTime @default(now())
+  jumlah_dibayar Int
+  status_pembayaran StatusPembayaran @default(Pending)
+  metode_pembayaran String?
+  kode_transaksi String @unique
+  token_pembayaran String?
+
+  id_pemesanan Int
+  pemesanan Pemesanan @relation(fields: [id_pemesanan], references: [id_pemesanan])
+  updated_at DateTime @updatedAt
 }
