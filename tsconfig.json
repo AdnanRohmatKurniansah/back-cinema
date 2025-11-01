@@ -11,7 +11,7 @@
     // "moduleResolution": "nodenext",
     
     /* Emit */
-    "outDir": "build/src",
+    "outDir": "build",
     "sourceMap": true,
     "resolveJsonModule": true,
     
