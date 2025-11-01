@@ -6,8 +6,8 @@
   "scripts": {
     "start": "tsc -w",
     "dev": "nodemon",
-    "build": "tsc",
     "vercel-build": "npm run build",
+    "build": "tsc",
     "format": "prettier --write .",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
