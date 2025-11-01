@@ -1,5 +1,5 @@
 import { type CabangType } from '../types'
-import { prisma } from '../utilss/prisma'
+import { prisma } from '../utils/prisma'
 
 export const GetAllCabang = async (page: number, limit: number) => {
   const offset = (page - 1) * limit

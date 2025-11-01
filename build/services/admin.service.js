@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteAdmin = exports.UpdateAdmin = exports.CreateAdmin = exports.GetUniqueAdmin = exports.GetAdmin = exports.GetAllAdmin = void 0;
-const prisma_1 = require("../utilss/prisma");
+const prisma_1 = require("../utils/prisma");
 const GetAllAdmin = async (currentAdminId, page, limit) => {
     const offset = (page - 1) * limit;
     const [data, total] = await Promise.all([

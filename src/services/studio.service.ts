@@ -1,5 +1,5 @@
 import { type StudioType } from '../types'
-import { prisma } from '../utilss/prisma'
+import { prisma } from '../utils/prisma'
 
 export const GetAllStudio = async (page: number, limit: number) => {
   const offset = (page - 1) * limit

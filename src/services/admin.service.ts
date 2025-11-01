@@ -1,5 +1,5 @@
 import { type AdminType } from '../types'
-import { prisma } from '../utilss/prisma'
+import { prisma } from '../utils/prisma'
 
 export const GetAllAdmin = async (currentAdminId: number, page: number, limit: number) => {
   const offset = (page - 1) * limit

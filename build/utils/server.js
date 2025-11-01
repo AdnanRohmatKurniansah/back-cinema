@@ -14,7 +14,7 @@ const studio_route_1 = require("../routes/studio.route");
 const kursi_route_1 = require("../routes/kursi.route");
 const genre_route_1 = require("../routes/genre.route");
 const createServer = () => {
-    const swaggerFile = fs_1.default.readFileSync(path_1.default.join(__dirname, '../docs/swagger.json'), 'utf-8');
+    const swaggerFile = fs_1.default.readFileSync(path_1.default.join(process.cwd(), '../docs/swagger.json'), 'utf-8');
     const swaggerDocument = JSON.parse(swaggerFile);
     const app = (0, express_1.default)();
     app.use(express_1.default.json());

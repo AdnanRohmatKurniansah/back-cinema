@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteStudio = exports.UpdateStudio = exports.CreateStudio = exports.GetStudio = exports.GetAllStudio = void 0;
-const prisma_1 = require("../utilss/prisma");
+const prisma_1 = require("../utils/prisma");
 const GetAllStudio = async (page, limit) => {
     const offset = (page - 1) * limit;
     const [data, total] = await Promise.all([

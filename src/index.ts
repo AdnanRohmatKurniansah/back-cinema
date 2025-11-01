@@ -1,5 +1,5 @@
 import { PORT } from './config'
-import createServer from './utilss/server'
+import createServer from './utils/server'
 
 const app = createServer()
 

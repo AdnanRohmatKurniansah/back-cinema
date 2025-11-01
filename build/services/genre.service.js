@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteGenre = exports.UpdateGenre = exports.CreateGenre = exports.GetUniqueGenre = exports.GetGenre = exports.GetAllGenre = void 0;
-const prisma_1 = require("../utilss/prisma");
+const prisma_1 = require("../utils/prisma");
 const GetAllGenre = async (page, limit) => {
     const offset = (page - 1) * limit;
     const [data, total] = await Promise.all([
