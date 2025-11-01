@@ -4,7 +4,7 @@
     {
       "src": "build/index.js",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["build/**", "src/docs/swagger.json"] }
+      "config": { "includeFiles": ["src/docs/swagger.json"] }
     }
   ],
   "routes": [
