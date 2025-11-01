@@ -30,7 +30,8 @@
     "ignoreDeprecations": "5.0"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/index.ts"
   ],
   "exclude": ["node_modules", "**/*.test.ts", "build"]
 }

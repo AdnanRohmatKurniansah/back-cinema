@@ -2,11 +2,10 @@
   "name": "node-starter",
   "version": "1.0.0",
   "description": "",
-  "type": "commonjs",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "dev": "nodemon",
-    "start": "tsc -w",
+    "start": "node build/src/index.js",
     "vercel-build": "npm run build",
     "build": "tsc",
     "format": "prettier --write .",
