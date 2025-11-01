@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Delete = exports.Update = exports.Create = exports.GetAll = exports.Login = void 0;
 const admin_validation_1 = require("../validations/admin.validation");
 const bcrypt_1 = require("bcrypt");
-const generateToken_1 = require("../utils/generateToken");
+const generateToken_1 = require("../utilss/generateToken");
 const admin_service_1 = require("../services/admin.service");
 const Login = async (req, res) => {
     try {

@@ -1,5 +1,5 @@
 import { type GenreType } from '../types'
-import { prisma } from '../utils/prisma'
+import { prisma } from '../utilss/prisma'
 
 export const GetAllGenre = async (page: number, limit: number) => {
   const offset = (page - 1) * limit

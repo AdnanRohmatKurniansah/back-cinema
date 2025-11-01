@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { AdminLoginSchema, AdminSchema } from '../validations/admin.validation'
 import { compare, hash } from 'bcrypt'
-import { AdminAccessToken } from '../utils/generateToken'
+import { AdminAccessToken } from '../utilss/generateToken'
 import { GetUniqueAdmin, CreateAdmin, GetAdmin, DeleteAdmin, GetAllAdmin, UpdateAdmin } from '../services/admin.service'
 import { AdminToken } from '../types'
 

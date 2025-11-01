@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteCabang = exports.UpdateCabang = exports.CreateCabang = exports.GetCabang = exports.GetAllCabang = void 0;
-const prisma_1 = require("../utils/prisma");
+const prisma_1 = require("../utilss/prisma");
 const GetAllCabang = async (page, limit) => {
     const offset = (page - 1) * limit;
     const [data, total] = await Promise.all([
