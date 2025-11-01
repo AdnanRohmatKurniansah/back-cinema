@@ -1,0 +1,814 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CinemaGo API",
+    "version": "1.0.0",
+    "description": "API documentation for the CinemaGo ticket booking application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/admin/": {
+      "get": {
+        "tags": ["Dashboard - Admin Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Get all admin data (with pagination)",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": { "type": "integer", "example": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "required": false,
+            "schema": { "type": "integer", "example": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Admin's Data" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/AdminData" }
+                    },
+                    "total": { "type": "integer", "example": 50 },
+                    "page": { "type": "integer", "example": 1 },
+                    "limit": { "type": "integer", "example": 10 }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/admin/create": {
+      "post": {
+        "tags": ["Dashboard - Admin Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Add new data admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AdminCreate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success" },
+          "400": { "description": "Validation failed" },
+          "409": { "description": "Username already exist" }
+        }
+      }
+    },
+    "/api/admin/update/{id_admin}": {
+      "put": {
+        "tags": ["Dashboard - Admin Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Update admin data by ID",
+        "parameters": [
+          {
+            "name": "id_admin",
+            "in": "path",
+            "required": true,
+            "description": "Admin ID to update",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Admin data updated successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Admin not found" },
+          "409": { "description": "Username already exist" }
+        }
+      }
+    },
+    "/api/admin/delete/{id_admin}": {
+      "delete": {
+        "tags": ["Dashboard - Admin Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Delete data admin by Id",
+        "parameters": [
+          {
+            "name": "id_admin",
+            "in": "path",
+            "required": true,
+            "description": "Admin id to be deleted",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Admin not found" }
+        }
+      }
+    },
+    "/api/admin/login": {
+      "post": {
+        "tags": ["Dashboard - Auth - Admin (SuperAdmin, Kasir, Staff)"],
+        "summary": "Login admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AdminLogin" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Invalid Credentials" }
+        }
+      }
+    },
+    "/api/cabang/": {
+      "get": {
+        "tags": ["Dashboard - Cabang Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Get all cabang data (with pagination)",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": { "type": "integer", "example": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "required": false,
+            "schema": { "type": "integer", "example": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Cabang's Data" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/CabangData" }
+                    },
+                    "total": { "type": "integer", "example": 5 },
+                    "page": { "type": "integer", "example": 1 },
+                    "limit": { "type": "integer", "example": 10 }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/cabang/create": {
+      "post": {
+        "tags": ["Dashboard - Cabang Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Add new cabang",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CabangCreate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cabang Data created successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/cabang/update/{id_cabang}": {
+      "put": {
+        "tags": ["Dashboard - Cabang Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Update cabang data by ID",
+        "parameters": [
+          {
+            "name": "id_cabang",
+            "in": "path",
+            "required": true,
+            "description": "Cabang ID to update",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CabangUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cabang data updated successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Cabang not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/cabang/delete/{id_cabang}": {
+      "delete": {
+        "tags": ["Dashboard - Cabang Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Delete cabang data by ID",
+        "parameters": [
+          {
+            "name": "id_cabang",
+            "in": "path",
+            "required": true,
+            "description": "Cabang ID to delete",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Cabang data deleted successfully" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Cabang not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/studio/": {
+      "get": {
+        "tags": ["Dashboard - Studio Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Get all studio data (with pagination)",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": { "type": "integer", "example": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "required": false,
+            "schema": { "type": "integer", "example": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Studio's Data" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/StudioData" }
+                    },
+                    "total": { "type": "integer", "example": 5 },
+                    "page": { "type": "integer", "example": 1 },
+                    "limit": { "type": "integer", "example": 10 }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/studio/create": {
+      "post": {
+        "tags": ["Dashboard - Studio Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Add new studio",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StudioCreate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Studio Data created successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/studio/update/{id_studio}": {
+      "put": {
+        "tags": ["Dashboard - Studio Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Update studio data by ID",
+        "parameters": [
+          {
+            "name": "id_studio",
+            "in": "path",
+            "required": true,
+            "description": "Studio ID to update",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StudioUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Studio data updated successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Studio not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/studio/delete/{id_studio}": {
+      "delete": {
+        "tags": ["Dashboard - Studio Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Delete studio data by ID",
+        "parameters": [
+          {
+            "name": "id_studio",
+            "in": "path",
+            "required": true,
+            "description": "Studio ID to delete",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Studio data deleted successfully" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Studio not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/kursi/": {
+      "get": {
+        "tags": ["Dashboard - Kursi Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Get all kursi data (with pagination)",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": { "type": "integer", "example": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "required": false,
+            "schema": { "type": "integer", "example": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Kursi's Data" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/KursiData" }
+                    },
+                    "total": { "type": "integer", "example": 5 },
+                    "page": { "type": "integer", "example": 1 },
+                    "limit": { "type": "integer", "example": 10 }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/kursi/create": {
+      "post": {
+        "tags": ["Dashboard - Kursi Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Add new kursi",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KursiCreate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Kursi Data created successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Selected Studio not found" },
+          "409": { "description": "Kursi already exist" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/kursi/update/{id_kursi}": {
+      "put": {
+        "tags": ["Dashboard - Kursi Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Update kursi data by ID",
+        "parameters": [
+          {
+            "name": "id_kursi",
+            "in": "path",
+            "required": true,
+            "description": "Kursi ID to update",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KursiUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Kursi data updated successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Kursi not found" },
+          "409": { "description": "Kursi already exist" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/kursi/delete/{id_kursi}": {
+      "delete": {
+        "tags": ["Dashboard - Kursi Data - Only SuperAdmin"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Delete kursi data by ID",
+        "parameters": [
+          {
+            "name": "id_kursi",
+            "in": "path",
+            "required": true,
+            "description": "Kursi ID to delete",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Kursi data deleted successfully" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Kursi not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/genre/": {
+      "get": {
+        "tags": ["Dashboard - Genre Data - (SuperAdmin, Staff)"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Get all genre data (with pagination)",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": { "type": "integer", "example": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "required": false,
+            "schema": { "type": "integer", "example": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Genre's Data" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/GenreData" }
+                    },
+                    "total": { "type": "integer", "example": 5 },
+                    "page": { "type": "integer", "example": 1 },
+                    "limit": { "type": "integer", "example": 10 }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/genre/create": {
+      "post": {
+        "tags": ["Dashboard - Genre Data - (SuperAdmin, Staff)"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Add new genre",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GenreCreate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Genre Data created successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "409": { "description": "Genre already exist" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/genre/update/{id_genre}": {
+      "put": {
+        "tags": ["Dashboard - Genre Data - (SuperAdmin, Staff)"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Update genre data by ID",
+        "parameters": [
+          {
+            "name": "id_genre",
+            "in": "path",
+            "required": true,
+            "description": "Genre ID to update",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GenreUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Genre data updated successfully" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Genre not found" },
+          "409": { "description": "Genre already exist" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/genre/delete/{id_genre}": {
+      "delete": {
+        "tags": ["Dashboard - Genre Data - (SuperAdmin, Staff)"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Delete genre data by ID",
+        "parameters": [
+          {
+            "name": "id_genre",
+            "in": "path",
+            "required": true,
+            "description": "Kursi ID to delete",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Genre data deleted successfully" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Genre not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "AdminData": {
+        "type": "object",
+        "properties": {
+          "id_admin": { "type": "integer", "example": 1 },
+          "nama_admin": { "type": "string", "example": "Adnan Kurniansah" },
+          "username": { "type": "string", "example": "mugetsu" },
+          "email": { "type": "string", "example": "admin@cinemago.com" },
+          "role": { "type": "string", "example": "Kasir" },
+          "id_cabang": { "type": "integer", "example": 1 },
+          "created_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" },
+          "updated_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" }
+        }
+      },
+      "AdminCreate": {
+        "type": "object",
+        "required": ["nama_admin", "username", "password", "email", "role", "id_cabang"],
+        "properties": {
+          "nama_admin": { "type": "string", "example": "Adnan Pundong" },
+          "username": { "type": "string", "example": "mugetsu" },
+          "email": { "type": "string", "example": "admin@cinemago.com" },
+          "password": { "type": "string", "example": "admin123" },
+          "role": { "type": "string", "example": "Kasir" },
+          "id_cabang": { "type": "number", "example": 1 }
+        }
+      },
+      "AdminUpdate": {
+        "type": "object",
+        "description": "Fields allowed to update admin data",
+        "properties": {
+          "nama_admin": { "type": "string", "example": "Adnan Pundong" },
+          "username": { "type": "string", "example": "mugetsu_new" },
+          "email": { "type": "string", "example": "updated_admin@cinemago.com" },
+          "password": { "type": "string", "example": "newpassword123" },
+          "role": { "type": "string", "example": "Kasir" },
+          "id_cabang": { "type": "number", "example": 2 }
+        }
+      },
+      "AdminDelete": {
+        "type": "object",
+        "required": ["id_admin"],
+        "properties": {
+          "id_admin": { "type": "number", "example": 1 }
+        }
+      },
+      "AdminLogin": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": { "type": "string", "example": "mugetsu" },
+          "password": { "type": "string", "example": "admin123" }
+        }
+      },
+      "CabangData": {
+        "type": "object",
+        "properties": {
+          "id_cabang": { "type": "integer", "example": 1 },
+          "nama_cabang": { "type": "string", "example": "Ambarukmo Go" },
+          "alamat": { "type": "string", "example": "Jl. Ambarukmo No. 99, Yogyakarta" },
+          "no_telp": { "type": "string", "example": "0274-123456" },
+          "created_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" },
+          "updated_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" }
+        }
+      },
+      "CabangCreate": {
+        "type": "object",
+        "required": ["nama_cabang", "alamat", "no_telp"],
+        "properties": {
+          "nama_cabang": { "type": "string", "example": "Go Ambarukmo Plaza" },
+          "alamat": { "type": "string", "example": "Jl. Malioboro No. 10, Yogyakarta" },
+          "no_telp": { "type": "string", "example": "0274-999888" }
+        }
+      },
+      "CabangUpdate": {
+        "type": "object",
+        "properties": {
+          "nama_cabang": { "type": "string", "example": "Go Ambarukmo Plaza" },
+          "alamat": { "type": "string", "example": "Jl. Kaliurang KM 5, Sleman" },
+          "no_telp": { "type": "string", "example": "0274-111222" }
+        }
+      },
+      "StudioData": {
+        "type": "object",
+        "properties": {
+          "id_studio": { "type": "integer", "example": 1 },
+          "nama_studio": { "type": "string", "example": "Studio 1" },
+          "kapasitas": { "type": "number", "example": 100 },
+          "id_cabang": { "type": "number", "example": 1 },
+          "created_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" },
+          "updated_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" }
+        }
+      },
+      "StudioCreate": {
+        "type": "object",
+        "required": ["nama_studio", "kapasitas", "id_cabang"],
+        "properties": {
+          "nama_studio": { "type": "string", "example": "Studio 1" },
+          "kapasitas": { "type": "number", "example": 100 },
+          "id_cabang": { "type": "number", "example": 1 }
+        }
+      },
+      "StudioUpdate": {
+        "type": "object",
+        "properties": {
+          "nama_studio": { "type": "string", "example": "Studio 1" },
+          "kapasitas": { "type": "number", "example": 100 },
+          "id_cabang": { "type": "number", "example": 1 }
+        }
+      },
+      "KursiData": {
+        "type": "object",
+        "properties": {
+          "id_kursi": { "type": "integer", "example": 1 },
+          "nomor_kursi": { "type": "string", "example": "A1" },
+          "status_kursi": { "type": "string", "example": "Tersedia" },
+          "id_studio": { "type": "number", "example": 1 },
+          "created_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" },
+          "updated_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" }
+        }
+      },
+      "KursiCreate": {
+        "type": "object",
+        "required": ["nomor_kursi", "status_kursi", "id_studio"],
+        "properties": {
+          "nomor_kursi": { "type": "string", "example": "A1" },
+          "status_kursi": { "type": "string", "example": "Tersedia" },
+          "id_studio": { "type": "number", "example": 1 }
+        }
+      },
+      "KursiUpdate": {
+        "type": "object",
+        "properties": {
+          "nomor_kursi": { "type": "string", "example": "A1" },
+          "status_kursi": { "type": "string", "example": "Terisi" },
+          "id_studio": { "type": "number", "example": 1 }
+        }
+      },
+      "GenreData": {
+        "type": "object",
+        "properties": {
+          "id_genre": { "type": "integer", "example": 1 },
+          "nama_genre": { "type": "string", "example": "Horor" },
+          "created_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" },
+          "updated_at": { "type": "string", "format": "date-time", "example": "2025-10-29T08:30:00Z" }
+        }
+      },
+      "GenreCreate": {
+        "type": "object",
+        "required": ["nama_genre"],
+        "properties": {
+          "nama_genre": { "type": "string", "example": "Thriler" }
+        }
+      },
+      "GenreUpdate": {
+        "type": "object",
+        "properties": {
+          "nama_genre": { "type": "string", "example": "Comedy" }
+        }
+      }
+    }
+  }
+}
