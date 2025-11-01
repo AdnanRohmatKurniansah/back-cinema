@@ -8,9 +8,10 @@
     
     /* Modules */
     "module": "commonjs",
+    // "moduleResolution": "nodenext",
     
     /* Emit */
-    "outDir": "build/",
+    "outDir": "build",
     "sourceMap": true,
     "resolveJsonModule": true,
     
@@ -29,8 +30,7 @@
     "ignoreDeprecations": "5.0"
   },
   "include": [
-    "src/**/*",
-    "src/index.ts"
+    "src/**/*"
   ],
   "exclude": ["node_modules", "**/*.test.ts", "build"]
 }

@@ -5,8 +5,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "tsc -w",
     "dev": "nodemon",
+    "start": "tsc -w",
     "vercel-build": "npm run build",
     "build": "tsc",
     "format": "prettier --write .",
