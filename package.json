@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node build/src/index.js",
-    "vercel-build": "npm run build",
+    "vercel-build": "npx prisma generate && npm run build",
     "build": "tsc",
     "format": "prettier --write .",
     "check-types": "tsc --pretty --noEmit",
